@@ -1,0 +1,242 @@
+//less写法
+//1.border: 5px double desaturate(red, 50%); //desaturate 是less中用于降低颜色饱和度的属性
+//2.color: darken(red, 10%); 比红色暗淡
+//3.color: lighten(red, 10%); 比红色亮些
+
+//Less中还提供了一个Color Functions，他具有多种变换颜色的功能，先把颜色转换成HSL色，然后在此基础上进行操作，具体包
+//括以下几种：
+//lighten(@color, 10%); // return a color which is 10% *lighter* than @color
+//darken(@color, 10%); // return a color which is 10% *darker* than @color
+//saturate(@color, 10%); // return a color 10% *more* saturated than @color
+//desaturate(@color, 10%); // return a color 10% *less* saturated than @color
+//fadein(@color, 10%); // return a color 10% *less* transparent than @color
+//fadeout(@color, 10%); // return a color 10% *more* transparent than @color
+//spin(@color, 10); // return a color with a 10 degree larger in hue than @color
+//spin(@color, -10); // return a color with a 10 degree smaller hue than @color
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+@backcolor: pink;
+@color: #000;
+@width: 1px;
+@red: red;
+@the-border: 1px;
+@images: "../images/";
+.border_radius(@angle:6px) {
+    -webkit-border-radius: @angle;
+    -moz-border-radius: @angle;
+    border-radius: @angle;
+}
+.boxshadow(@x:0,@y:0,@blur:0,@color:0) {
+    -webkit-box-shadow: @arguments;
+    -moz-box-shadow: @arguments;
+    box-shadow: @arguments;
+}
+.backcolor {
+    background-color: #0fa2b3;
+    color: #fff;
+}
+
+.btn{ //不同命名的公共部分要这样写，必须是@_，表示公共部分
+    &:hover{
+        background-color: @color;
+        color: #fff;
+    }
+    font-size: 14px;
+    color: #dc0201;
+    display: inline-block;
+    padding: 0 15px;
+    line-height: 30px;
+    border: 1px solid #dc0201;
+    .border_radius;
+    cursor: pointer;
+}
+//匹配模式
+@switch: light;
+@switch2 : dark;
+.color (@switch2, @color) {
+    color: darken(@color, 10%);
+}
+.color (@switch, @color) {
+    color: lighten(@color, 10%);
+}
+//匹配模式
+
+//三角形
+.triangle(left,@w:5px,@c:#ccc){
+    border-width: @w;
+    border-color: transparent @c transparent transparent;
+    border-style: dashed dashed solid dashed;
+}
+.triangle(bottom,@w:5px,@c:#ccc){
+    border-width: @w;
+    border-color: @c transparent transparent  transparent;
+    border-style: solid dashed dashed  dashed;
+}
+.triangle(right,@w:5px,@c:#ccc){
+    border-width: @w;
+    border-color: transparent transparent  transparent @c;
+    border-style:  dashed dashed  dashed solid;
+}
+.triangle(@_,@w:5px,@c:#ccc){
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+//三角形
+
+.content {
+    background-color: @backcolor;
+    padding: 20px;
+    ul {
+        overflow: hidden;
+        li {
+            @color: blue;
+            list-style: none;
+            width: 100px;
+            border: @width solid @color;
+            font-size: 14px;
+            color: @color;
+            float: left;
+            margin-right: 15px;
+            text-align: center;
+            .border_radius;
+            @color: green;
+        }
+    }
+    .box {
+        margin-top: 20px;
+        width: 500px;
+        border: 1px solid #000;
+        padding: 10px;
+        .border_radius(10px);
+        .boxshadow(0, 0, 15px, #0fa2b3);
+        p {
+            &:hover {
+                background-color: orange;
+            }
+            font-size: 15px;
+            color: #dc0201;
+            .backcolor
+        }
+    }
+    .bin {
+        background-color: white;
+        padding: 20px;
+        margin: 15px 0;
+        p {
+            &:focus {
+                outline: none;
+            }
+            border: 5px double desaturate(@red, 50%); //desaturate 是less中用于降低颜色饱和度的属性
+            border-width: @the-border @the-border*2 @the-border*3 @the-border;
+        }
+    }
+    .xc {
+        width: 100px;
+        height: 100px;
+        background: url("@{images}2.jpg") no-repeat center;
+        background-size: 100%;
+    }
+    .cabin {
+        a {
+            text-decoration: none;
+            .btn;
+            .color(@switch, #dc0201);
+        }
+    }
+
+    .shape{
+        .triangle(top,@w:5px,@c:#ccc){
+            border-width: @w;
+            border-color: transparent transparent @c transparent;
+            border-style: dashed dashed solid dashed;
+        }
+        span{
+            display: inline-block;
+            &:nth-child(1){
+                .triangle(right,50-20px,red);
+            }
+            &:nth-child(2){
+                .triangle(top,50-20px,red);
+            }
+            &:nth-child(3){
+                .triangle(left,50-20px,red);
+            }
+            &:nth-child(4){
+                .triangle(bottom,50-20px,red);
+            }
+            &:nth-child(5){
+                border-left: 50px solid #fff;
+                border-top: 50px solid red;
+                border-right: 50px solid orange;
+                border-bottom: 50px solid green;
+                .border_radius(50%)
+            }
+        }
+    }
+    .pickcolor{
+        @colorlist: orange,blue,#000;
+        p{
+            font-size: 15px;
+            &:nth-child(1){
+                color: extract(@colorlist,2)
+            }
+            &:nth-child(2){
+                color: extract(@colorlist,1)
+            }
+            &:nth-child(3){
+                color: extract(@colorlist,3)
+            }
+        }
+    }
+    .self{
+        background: #fff;
+        padding: 15px;
+        .identify(@color:red,@font:15px,@border:2px solid red){
+            color:@color;
+            font-size: @font;
+            border:@border;
+        }
+        span{
+            &:nth-child(1){
+                .identify;
+                //.identify(orange,20px,1px solid pink)
+            }
+        }
+    }
+}
+
+//在less中 注释有两种 // 和 /* */
+// 1.less文件编译为css文件后 //注释的内容会被自动过滤掉
+// 2.less文件编译为css文件后/* */注释的内容会被解析
+
+/*定义多个相同名称的变量时变量中的执行顺序*/
+/*Less 中，变量作用域采用的是就近原则，换句话说，就是先查找自己有没有这个变量，如果有，就取自己的变量，如果没有，就查找父元素，依此类推。*/
+@var: 0;
+.class {
+    @var: 1;
+    .brass {
+        @var: 2;
+        three: @var; //这是的值是3
+        @var: 3;
+    }
+    one: @var; //这是的值是1
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

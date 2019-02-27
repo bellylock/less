@@ -1,0 +1,6 @@
+将less文件转换成css文件
+
+1.npm install -g less
+
+2. lessc+空格+less文件名+空格+大于号+空格+以css为后缀的文件名
+例如：lessc main.less > main.css
